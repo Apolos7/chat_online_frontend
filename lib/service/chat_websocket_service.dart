@@ -10,7 +10,7 @@ class ChatWebSocketService {
   Future _initConnection() async {
     log('Initiating connection.');
     channel = IOWebSocketChannel.connect(
-      "${APIConstants.API_BACKEND_LOCAL}/chat",
+      "${APIConstants.API_BACKEND_WEBSOCKET}/chat",
       headers: {"Authorization": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBcG9sb3M3IiwiZXhwIjoxNjgxODk2NDk0LCJpYXQiOjE2Nzg2NTY0OTR9.GK7MJXRhmGn1pXb4W5P7TqbJxoLqs1CY1Erg_tG1Gg--loK8o81yn5jog1SJxEGXzl0bYoJr3JmnnqRB6XXtmQ"},
       pingInterval: const Duration(seconds: 2),
     );

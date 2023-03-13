@@ -1,4 +1,4 @@
-import 'package:chat_online_frontend/view/chat_view.dart';
+import 'package:chat_online_frontend/view/login_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,9 +13,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: const ChatView(),
+      home: const LoginView(),
     );
   }
 }

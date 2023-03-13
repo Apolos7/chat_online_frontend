@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:chat_online_frontend/componenets/connection_bubble_widget.dart';
 import 'package:chat_online_frontend/componenets/input_message_widget.dart';
 import 'package:chat_online_frontend/componenets/message_bubble_widget.dart';
 import 'package:chat_online_frontend/model/message.dart';
@@ -9,7 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class ChatView extends StatefulWidget {
-  const ChatView({Key? key}) : super(key: key);
+  const ChatView({Key? key, required this.username, required this.token})
+      : super(key: key);
+
+  final String username;
+  final String token;
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -78,7 +83,9 @@ class _ChatViewState extends State<ChatView> {
   }
 
   _buildItem(int index, Message message) {
-    final isMe = message.from == "Apolos7";
-    return MessageBubbleWidget(chatMessage: message, isMe: isMe);
+    final isMe = message.from == widget.username;
+    return message.type == "CHAT"
+        ? MessageBubbleWidget(chatMessage: message, isMe: isMe)
+        : ConnectionBubbleWidget(chatMessage: message);
   }
 }

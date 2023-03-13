@@ -39,6 +39,7 @@ dependencies:
   web_socket_channel: ^2.3.0
   intl: ^0.18.0
   shared_preferences: ^2.0.18
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
