@@ -1,4 +1,4 @@
-import 'package:chat_online_frontend/view/login_view.dart';
+import 'package:chat_online_frontend/view/sign_in_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,11 +11,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Chat Online',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        useMaterial3: true,
+        colorSchemeSeed: Colors.green,
+        brightness: Brightness.dark,
       ),
-      home: const LoginView(),
+      home: const SignInView(),
     );
   }
 }

@@ -1,35 +1,39 @@
 import 'dart:developer';
-
 import 'package:chat_online_frontend/config/api_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 
 class ChatWebSocketService {
 
-  late IOWebSocketChannel channel;
+  late IOWebSocketChannel _channel;
 
   Future _initConnection() async {
     log('Initiating connection.');
-    channel = IOWebSocketChannel.connect(
-      "${APIConstants.API_BACKEND_WEBSOCKET}/chat",
-      headers: {"Authorization": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBcG9sb3M3IiwiZXhwIjoxNjgxODk2NDk0LCJpYXQiOjE2Nzg2NTY0OTR9.GK7MJXRhmGn1pXb4W5P7TqbJxoLqs1CY1Erg_tG1Gg--loK8o81yn5jog1SJxEGXzl0bYoJr3JmnnqRB6XXtmQ"},
+    final shared = await SharedPreferences.getInstance();
+    final token = shared.getString('token');
+    _channel = IOWebSocketChannel.connect(
+      '${APIConstants.API_BACKEND_WEBSOCKET}/chat',
+      headers: {'Authorization': token},
       pingInterval: const Duration(seconds: 2),
     );
     log('Connection initiated successfully.');
   }
 
-  Future broadcastData({required Function(String) onRecive }) async {
-    _initConnection();
-    channel.stream.listen((message) {
+  Future broadcastData({required Function(String) onRecive}) async {
+    await _initConnection();
+    _channel.stream.listen((message) {
       onRecive(message);
     }, onError: (error) {
-
-    }, onDone: () {
-
+      // TODO: Retry connection
     }, cancelOnError: true);
   }
 
   Future sendMessage({required String message}) async {
-    channel.sink.add(message);
+    _channel.sink.add(message);
+  }
+
+  Future closeConnection() async {
+    _channel.sink.close();
   }
 
 }
