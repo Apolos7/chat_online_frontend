@@ -2,7 +2,7 @@ import 'package:chat_online_frontend/service/user_service.dart';
 import 'package:flutter/material.dart';
 
 class SignUpView extends StatefulWidget {
-  const SignUpView({Key? key}) : super(key: key);
+  const SignUpView({super.key});
 
   @override
   State<SignUpView> createState() => _SignUpViewState();
@@ -12,7 +12,7 @@ class _SignUpViewState extends State<SignUpView> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _passwordVisible = true;
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +33,10 @@ class _SignUpViewState extends State<SignUpView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+                  children: <Widget>[
                     const Spacer(),
                     const Text(
-                      "Sign up",
+                      'Sign up',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 30,
@@ -133,8 +133,8 @@ class _SignUpViewState extends State<SignUpView> {
           .registerUser(username: username, password: password)
           .then((value) {
         Navigator.pop(context, value);
-      }).onError((error, stackTrace) {
-        var snack = SnackBar(content: Text(error.toString()));
+      }).onError((Object? error, StackTrace stackTrace) {
+        SnackBar snack = SnackBar(content: Text(error.toString()));
         ScaffoldMessenger.of(context).showSnackBar(snack);
       });
     }

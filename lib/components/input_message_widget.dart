@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 class InputMessageWidget extends StatelessWidget {
   const InputMessageWidget({
-    Key? key,
-    required this.messageEditingController,
-    required this.handleSubmit,
-  }) : super(key: key);
+    required this.messageEditingController, required this.handleSubmit, super.key,
+  });
 
   final TextEditingController messageEditingController;
   final Function(String message) handleSubmit;
@@ -18,7 +16,7 @@ class InputMessageWidget extends StatelessWidget {
         width: double.infinity,
         height: 60,
         child: Row(
-          children: [
+          children: <Widget>[
             Flexible(
                 child: TextField(
               keyboardType: TextInputType.text,

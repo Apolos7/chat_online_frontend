@@ -1,14 +1,12 @@
-import 'package:chat_online_frontend/componenets/message_timestamp_widget.dart';
+import 'package:chat_online_frontend/components/message_timestamp_widget.dart';
 import 'package:chat_online_frontend/model/message.dart';
 import 'package:flutter/material.dart';
 
 
 class MessageBubbleWidget extends StatelessWidget {
   const MessageBubbleWidget({
-    Key? key,
-    required this.chatMessage,
-    required this.isMe,
-  }) : super(key: key);
+    required this.chatMessage, required this.isMe, super.key,
+  });
 
   final Message chatMessage;
   final bool isMe;
@@ -18,11 +16,11 @@ class MessageBubbleWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment:
       isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Row(
           mainAxisAlignment:
           isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Container(
               padding: const EdgeInsets.all(10),
               margin: isMe
@@ -35,14 +33,14 @@ class MessageBubbleWidget extends StatelessWidget {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Text(
-                    chatMessage.from ?? "",
+                    chatMessage.from ?? '',
                     style: const TextStyle(fontSize: 13, color: Colors.white),
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    chatMessage.content ?? "",
+                    chatMessage.content ?? '',
                     style: const TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ],

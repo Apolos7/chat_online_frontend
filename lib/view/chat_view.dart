@@ -1,18 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:chat_online_frontend/componenets/connection_bubble_widget.dart';
-import 'package:chat_online_frontend/componenets/input_message_widget.dart';
-import 'package:chat_online_frontend/componenets/message_bubble_widget.dart';
+import 'package:chat_online_frontend/components/connection_bubble_widget.dart';
+import 'package:chat_online_frontend/components/input_message_widget.dart';
+import 'package:chat_online_frontend/components/message_bubble_widget.dart';
 import 'package:chat_online_frontend/model/message.dart';
 import 'package:chat_online_frontend/service/chat_websocket_service.dart';
 import 'package:chat_online_frontend/view/sign_in_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class ChatView extends StatefulWidget {
-  const ChatView({Key? key, required this.username})
-      : super(key: key);
+  const ChatView({required this.username, super.key});
 
   final String username;
 
@@ -23,14 +21,14 @@ class ChatView extends StatefulWidget {
 class _ChatViewState extends State<ChatView> {
   final TextEditingController messageEditingController =
       TextEditingController();
-  final List<Message> messageList = [];
+  final List<Message> messageList = <Message>[];
   final ScrollController scrollController = ScrollController();
   final ChatWebSocketService chatService = ChatWebSocketService();
 
   @override
   void initState() {
     super.initState();
-    chatService.broadcastData(onRecive: (message) {
+    chatService.broadcastData(onRecive: (String message) {
       log(message);
       setState(() {
         messageList.insert(0, Message.fromJson(jsonDecode(message)));
@@ -51,12 +49,12 @@ class _ChatViewState extends State<ChatView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
+        actions: <Widget>[
           IconButton(
               onPressed: () {
                 chatService.closeConnection();
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const SignInView(),
+                  builder: (BuildContext context) => const SignInView(),
                 ));
               },
               icon: const Icon(Icons.logout))
@@ -75,7 +73,7 @@ class _ChatViewState extends State<ChatView> {
                   itemCount: messageList.length,
                   reverse: true,
                   controller: scrollController,
-                  itemBuilder: (context, index) =>
+                  itemBuilder: (BuildContext context, int index) =>
                       _buildItem(index, messageList[index]),
                 ),
               ),
@@ -90,9 +88,9 @@ class _ChatViewState extends State<ChatView> {
     );
   }
 
-  _buildItem(int index, Message message) {
-    final isMe = message.from == widget.username;
-    return message.type == "CHAT"
+  StatelessWidget _buildItem(int index, Message message) {
+    final bool isMe = message.from == widget.username;
+    return message.type == 'CHAT'
         ? MessageBubbleWidget(chatMessage: message, isMe: isMe)
         : ConnectionBubbleWidget(chatMessage: message);
   }

@@ -5,21 +5,20 @@ import 'package:flutter/material.dart';
 
 class ConnectionBubbleWidget extends StatelessWidget {
   const ConnectionBubbleWidget({
-    Key? key,
-    required this.chatMessage
-  }) : super(key: key);
+    required this.chatMessage, super.key
+  });
 
   final Message chatMessage;
 
   @override
   Widget build(BuildContext context) {
-    bool isConnect = chatMessage.type == "CONNECT";
+    bool isConnect = chatMessage.type == 'CONNECT';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
+      children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Container(
               padding: const EdgeInsets.all(10),
               constraints: const BoxConstraints(

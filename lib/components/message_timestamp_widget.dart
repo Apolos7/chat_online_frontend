@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 
 class MessageTimestampWidget extends StatelessWidget {
   const MessageTimestampWidget({
-    Key? key,
-    required this.date,
-  }) : super(key: key);
+    required this.date, super.key,
+  });
 
   final DateTime date;
 
   @override
   Widget build(BuildContext context) {
-    const datePattern = 'dd MMM yyyy, HH:mm';
+    const String datePattern = 'dd MMM yyyy, HH:mm';
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),

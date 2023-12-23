@@ -2,7 +2,6 @@ import 'package:chat_online_frontend/service/user_service.dart';
 import 'package:chat_online_frontend/view/chat_view.dart';
 import 'package:chat_online_frontend/view/sign_up_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInView extends StatefulWidget {
@@ -15,8 +14,8 @@ class SignInView extends StatefulWidget {
 class _SignInViewState extends State<SignInView> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _passwordVisible = true;
-  final _formKey = GlobalKey<FormState>();
+  final ValueNotifier<bool> _passwordVisible = ValueNotifier(true);
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +36,10 @@ class _SignInViewState extends State<SignInView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+                  children: <Widget>[
                     const Spacer(),
                     const Text(
-                      "Sign in",
+                      'Sign in',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 30,
@@ -61,30 +60,30 @@ class _SignInViewState extends State<SignInView> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    TextFormField(
-                      controller: _passwordController,
-                      validator: passwordValidator,
-                      obscureText: _passwordVisible,
-                      decoration: InputDecoration(
-                        hintText: 'password',
-                        hintStyle: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white38,
-                        ),
-                        suffixIcon: IconButton(
-                          onPressed: () => setState(() {
-                            _passwordVisible = !_passwordVisible;
-                          }),
-                          icon: Icon(
-                            _passwordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                    ValueListenableBuilder(
+                      valueListenable: _passwordVisible,
+                      builder: (BuildContext context, bool value, Widget? child) => TextFormField(
+                        controller: _passwordController,
+                        validator: passwordValidator,
+                        obscureText: value,
+                        decoration: InputDecoration(
+                          hintText: 'password',
+                          hintStyle: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.white38,
+                          ),
+                          suffixIcon: IconButton(
+                            onPressed: () => _passwordVisible.value =
+                                !_passwordVisible.value,
+                            icon: Icon(
+                              value ? Icons.visibility : Icons.visibility_off,
+                            ),
                           ),
                         ),
-                      ),
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white54,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white54,
+                        ),
                       ),
                     ),
                     const Spacer(),
@@ -133,18 +132,18 @@ class _SignInViewState extends State<SignInView> {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState!.validate()) {
       UserService userService = UserService();
-      final shared = await SharedPreferences.getInstance();
+      final SharedPreferences shared = await SharedPreferences.getInstance();
       userService
           .authenticateUser(username: username, password: password)
-          .then((token) {
+          .then((String token) {
         shared.setString('token', token);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => ChatView(username: username),
+            builder: (BuildContext context) => ChatView(username: username),
           ),
         );
       }).catchError((error, stackTrace) {
-        var snack = SnackBar(content: Text(error.toString()));
+        SnackBar snack = SnackBar(content: Text(error.toString()));
         ScaffoldMessenger.of(context).showSnackBar(snack);
       });
     }
@@ -154,7 +153,7 @@ class _SignInViewState extends State<SignInView> {
     FocusScope.of(context).unfocus();
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const SignUpView(),
+        builder: (BuildContext context) => const SignUpView(),
       ),
     );
   }

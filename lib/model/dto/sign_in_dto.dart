@@ -8,8 +8,8 @@ class SignInDTO {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['username'] = this.username;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['username'] = username;
     return data;
   }
 }

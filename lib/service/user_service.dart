@@ -1,12 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:chat_online_frontend/config/api_constants.dart';
+import 'package:chat_online_frontend/config/Enviroment.dart';
 import 'package:chat_online_frontend/model/dto/sign_in_dto.dart';
+import 'package:chat_online_frontend/service/base_service.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class UserService {
+class UserService extends BaseService {
   static final UserService _singleton = UserService._internal();
   factory UserService() {
     return _singleton;
@@ -15,54 +16,55 @@ class UserService {
 
   Future<String> authenticateUser(
       {required String username, required String password}) async {
-    var url = Uri.parse("${APIConstants.API_BACKEND}/authenticate");
+
+    Uri url = getCompleteUrl('/authenticate');
     try {
-      var response = await http.post(url,
-          body: jsonEncode({'username': username, 'password': password}),
-          headers: {
+      Response response = await http.post(url,
+          body: jsonEncode(<String, String>{'username': username, 'password': password}),
+          headers: <String, String>{
             'Content-type': 'application/json',
             'Accept': 'application/json',
           });
       if (response.statusCode == 200) {
         return "Bearer ${response.headers['authorization']}";
       }
-      return Future.error("wrong username or password");
+      return Future<String>.error('wrong username or password');
     } on ClientException catch (e) {
       log(e.message, time: DateTime.now());
-      return Future.error(e.message);
+      return Future<String>.error(e.message);
     } on SocketException catch (e) {
       log(e.message, time: DateTime.now());
-      return Future.error('Unable to connect to the server');
+      return Future<String>.error('Unable to connect to the server');
     } on FormatException catch (e) {
       log(e.message, time: DateTime.now());
-      return Future.error(
+      return Future<String>.error(
           'Error while reading the data brought from the server');
     }
   }
 
-  Future registerUser(
+  Future<Object> registerUser(
       {required String username, required String password}) async {
-    var url = Uri.parse("${APIConstants.API_BACKEND}/user");
+    final Uri url = getCompleteUrl('/user');
     try {
-      var response = await http.post(url,
-          body: jsonEncode({'username': username, 'password': password}),
-          headers: {
+      Response response = await http.post(url,
+          body: jsonEncode(<String, String>{'username': username, 'password': password}),
+          headers: <String, String>{
             'Content-type': 'application/json',
             'Accept': 'application/json',
           });
       if (response.statusCode == 200) {
         return SignInDTO.fromJson(jsonDecode(response.body));
       }
-      return Future.error("something went wrong, try again later");
+      return Future<String>.error('something went wrong, try again later');
     } on ClientException catch (e) {
       log(e.message, time: DateTime.now());
-      return Future.error(e.message);
+      return Future<String>.error(e.message);
     } on SocketException catch (e) {
       log(e.message, time: DateTime.now());
-      return Future.error('Unable to connect to the server');
+      return Future<String>.error('Unable to connect to the server');
     } on FormatException catch (e) {
       log(e.message, time: DateTime.now());
-      return Future.error(
+      return Future<String>.error(
           'Error while reading the data brought from the server');
     }
   }
