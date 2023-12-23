@@ -1,11 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:chat_online_frontend/config/Enviroment.dart';
+
 import 'package:chat_online_frontend/model/dto/sign_in_dto.dart';
 import 'package:chat_online_frontend/service/base_service.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:http/http.dart';
 
 class UserService extends BaseService {
   static final UserService _singleton = UserService._internal();

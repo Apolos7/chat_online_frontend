@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:chat_online_frontend/config/Enviroment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
@@ -12,7 +13,7 @@ class ChatWebSocketService {
     final SharedPreferences shared = await SharedPreferences.getInstance();
     final String? token = shared.getString('token');
     _channel = IOWebSocketChannel.connect(
-      '${Enviroment.apiUrl}/chat',
+      'ws://${Enviroment.apiUrl}/chat',
       headers: <String, String?>{'Authorization': token},
       pingInterval: const Duration(seconds: 2),
     );
